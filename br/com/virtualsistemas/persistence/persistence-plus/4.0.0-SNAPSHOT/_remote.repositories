@@ -1,0 +1,8 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Wed Apr 15 03:57:45 BRT 2020
+persistence-plus-4.0.0-SNAPSHOT.jar>=
+persistence-plus-4.0.0-SNAPSHOT-tests.jar>=
+persistence-plus-4.0.0-SNAPSHOT-javadoc.jar>=
+persistence-plus-4.0.0-SNAPSHOT.pom>=
+persistence-plus-4.0.0-SNAPSHOT-test-sources.jar>=
+persistence-plus-4.0.0-SNAPSHOT-sources.jar>=
