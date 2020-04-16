@@ -33,6 +33,8 @@ import br.com.virtualsistemas.common.Constants;
  */
 public class CryptoUtils {
 
+	private CryptoUtils() {}
+
 	public static byte[] encrypt(byte[] value, Key key, AlgorithmParameterSpec params, String transformation,
 			int opmode) {
 		try {

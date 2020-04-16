@@ -15,6 +15,8 @@ import br.com.virtualsistemas.common.builders.DateBuilder;
  */
 public class DateUtils {
 
+	private DateUtils() {}
+
 	public static Calendar dateToCalendar(Date date) {
 		GregorianCalendar calendar = new GregorianCalendar(Constants.TIME_ZONE, Constants.BRAZIL);
 		calendar.setTime(date);

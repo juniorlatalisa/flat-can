@@ -17,6 +17,8 @@ import java.util.Date;
  * @author juniorlatalisa
  */
 public class FileUtils {
+	
+	private FileUtils() {}
 
 	/**
 	 * @see File#lastModified()

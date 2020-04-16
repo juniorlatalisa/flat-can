@@ -31,6 +31,8 @@ import br.com.virtualsistemas.common.builders.MapBuilder;
  * @author juniorlatalisa
  */
 public class StringUtils {
+	
+	private StringUtils() {}
 
 	private static final Map<String, DecimalFormat> decimalFormat = new HashMap<>();
 	private static final Map<String, SimpleDateFormat> simpleDateFormat = MapBuilder.build(Constants.DATE_TIME_PATTERN,
