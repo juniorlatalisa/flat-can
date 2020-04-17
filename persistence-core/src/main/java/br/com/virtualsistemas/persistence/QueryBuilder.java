@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.persistence.PersistenceException;
@@ -96,8 +97,13 @@ public abstract class QueryBuilder {
 	@SuppressWarnings("unchecked")
 	public <T> T find() {
 		Iterator<T> iterator = iterator();
-		return (iterator.hasNext()) ? (iterator instanceof Supplier) ? ((Supplier<T>) iterator).get() : iterator.next()
-				: null;
+		return (iterator.hasNext()) ? (iterator instanceof Supplier) //
+				? ((Supplier<T>) iterator).get()
+				: iterator.next() : null;
+	}
+
+	public <T, R> R find(Function<T, R> function) {
+		return function.apply(find());
 	}
 
 	public <T> Optional<T> optional() {
@@ -108,7 +114,15 @@ public abstract class QueryBuilder {
 
 	public abstract <T> List<T> list();
 
+	public <T, R> R list(Function<List<T>, R> function) {
+		return function.apply(list());
+	}
+
 	public abstract <T> Iterator<T> iterator();
+
+	public <T, R> R iterator(Function<Iterator<T>, R> function) {
+		return function.apply(iterator());
+	}
 
 	public static String load(InputStream is, Charset charset) {
 		String sql;
