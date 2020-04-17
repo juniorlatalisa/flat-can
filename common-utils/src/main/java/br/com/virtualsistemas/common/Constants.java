@@ -9,6 +9,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * @author juniorlatalisa
+ */
 public interface Constants {
 
 	Locale BRAZIL = new Locale("pt", "BR");

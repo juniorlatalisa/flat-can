@@ -1,5 +1,8 @@
 package br.com.virtualsistemas.common.builders;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -8,7 +11,11 @@ import java.util.TimeZone;
 import br.com.virtualsistemas.common.Constants;
 import br.com.virtualsistemas.common.utils.DateUtils;
 
-public class DateBuilder {
+/**
+ * @author juniorlatalisa
+ *
+ */
+public class DateBuilder implements Builder<Date> {
 
 	private Calendar source;
 
@@ -20,6 +27,7 @@ public class DateBuilder {
 		this(new GregorianCalendar(Constants.TIME_ZONE, Constants.BRAZIL));
 	}
 
+	@Override
 	public Date build() {
 		return source.getTime();
 	}
@@ -398,6 +406,11 @@ public class DateBuilder {
 		return this;
 	}
 
+	public DateBuilder setDateTime(LocalDateTime value) {
+		source.setTime(DateUtils.dateFrom(value));
+		return this;
+	}
+
 	/**
 	 * Atribui somente a data a base do objeto mantendo a hora.
 	 * 
@@ -409,6 +422,12 @@ public class DateBuilder {
 				.setMonth(calendar.get(Calendar.MONTH))//
 				.setYear(calendar.get(Calendar.YEAR))//
 		;
+	}
+
+	public DateBuilder setDateOnly(LocalDate value) {
+		source.setTime(Date.from(value.atTime(DateUtils.dateToLocalTime(build()))//
+				.toInstant(Constants.ZONE_OFFSET)));
+		return this;
 	}
 
 	/**
@@ -423,6 +442,12 @@ public class DateBuilder {
 				.setMinute(calendar.get(Calendar.MINUTE))//
 				.setHour(calendar.get(Calendar.HOUR_OF_DAY))//
 		;
+	}
+
+	public DateBuilder setTimeOnly(LocalTime value) {
+		source.setTime(Date.from(value.atDate(DateUtils.dateToLocalDate(build()))//
+				.toInstant(Constants.ZONE_OFFSET)));
+		return this;
 	}
 
 	/**

@@ -3,7 +3,10 @@ package br.com.virtualsistemas.common.builders;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapBuilder<K, V> {
+/**
+ * @author juniorlatalisa
+ */
+public class MapBuilder<K, V> implements Builder<Map<K, V>> {
 
 	protected MapBuilder(Map<K, V> source) {
 		this.source = source;
@@ -15,6 +18,7 @@ public class MapBuilder<K, V> {
 
 	private Map<K, V> source;
 
+	@Override
 	public Map<K, V> build() {
 		return new HashMap<K, V>(source);
 	}

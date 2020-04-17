@@ -6,6 +6,10 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import br.com.virtualsistemas.common.Constants;
 
+/**
+ * @author juniorlatalisa
+ *
+ */
 public class LocalDateTimeXmlAdapter extends XmlAdapter<String, LocalDateTime> {
 
 	@Override

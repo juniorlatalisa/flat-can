@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author juniorlatalisa
  */
-public class ListBuilder<E> {
+public class ListBuilder<E> implements Builder<List<E>> {
 
 	protected ListBuilder(List<E> source) {
 		this.source = source;
@@ -20,6 +20,7 @@ public class ListBuilder<E> {
 
 	private List<E> source;
 
+	@Override
 	public List<E> build() {
 		return new ArrayList<>(source);
 	}

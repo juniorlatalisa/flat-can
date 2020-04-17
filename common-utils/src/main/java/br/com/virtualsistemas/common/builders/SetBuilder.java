@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * @author juniorlatalisa
  */
-public class SetBuilder<E> {
+public class SetBuilder<E> implements Builder<Set<E>> {
 
 	protected SetBuilder(Set<E> source) {
 		this.source = source;
@@ -19,6 +19,7 @@ public class SetBuilder<E> {
 
 	private Set<E> source;
 
+	@Override
 	public Set<E> build() {
 		return new HashSet<>(source);
 	}

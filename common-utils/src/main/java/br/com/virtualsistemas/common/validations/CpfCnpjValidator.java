@@ -14,6 +14,9 @@ import javax.validation.ReportAsSingleViolation;
 
 import br.com.virtualsistemas.common.Constants;
 
+/**
+ * @author juniorlatalisa
+ */
 public class CpfCnpjValidator implements ConstraintValidator<CpfCnpjValidator.CpfCnpj, String> {
 
 	private CpfCnpj annotation;

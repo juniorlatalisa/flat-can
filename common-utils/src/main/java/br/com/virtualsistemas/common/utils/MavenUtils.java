@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.Properties;
 
+/**
+ * @author juniorlatalisa
+ */
 public class MavenUtils {
 
 	private MavenUtils() {}

@@ -3,6 +3,8 @@ package br.com.virtualsistemas.common.utils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -15,7 +17,8 @@ import br.com.virtualsistemas.common.builders.DateBuilder;
  */
 public class DateUtils {
 
-	private DateUtils() {}
+	private DateUtils() {
+	}
 
 	public static Calendar dateToCalendar(Date date) {
 		GregorianCalendar calendar = new GregorianCalendar(Constants.TIME_ZONE, Constants.BRAZIL);
@@ -219,6 +222,15 @@ public class DateUtils {
 		}
 
 		return -1;
+	}
+
+	/**
+	 * @see Period#between(LocalDate, LocalDate)
+	 * @see Period#get(java.time.temporal.TemporalUnit)
+	 */
+	public static long dateDiff(ChronoUnit unit, Date startDate, Date endDate) {
+		return Period.between(dateToLocalDate(startDate), dateToLocalDate(endDate))//
+				.get(unit);
 	}
 
 	/**
