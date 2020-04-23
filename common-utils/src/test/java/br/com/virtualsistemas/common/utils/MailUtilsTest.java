@@ -52,23 +52,21 @@ public class MailUtilsTest {
 	@Test
 	public void send() {
 		if (!PROPS.isEmpty()) {
-
-			new MimeMessageBuilder(PROPS//
+			Assert.assertTrue(new MimeMessageBuilder(PROPS//
 					.getProperty("host"), // host
 					Integer.parseInt(PROPS.getProperty("port"), 10), // port
 					PROPS.getProperty("user"), // user
 					PROPS.getProperty("password")// password
 			)//
 					.addHeader("virtual-teste", "header-test")//
-					//.addHeader("Disposition-Notification-To", PROPS.getProperty("user"))//
+					// .addHeader("Disposition-Notification-To", PROPS.getProperty("user"))//
 					.setFrom(PROPS.getProperty("user"), "Origem do teste \uD83D\uDE00")//
-					.setConfirmation(PROPS.getProperty("user"))
-					.setSubject("\uD83C\uDF55".concat(new Date().toString()))//
+					.setConfirmation(PROPS.getProperty("user")).setSubject("\uD83C\uDF55".concat(new Date().toString()))//
 					.addRecipient(RecipientType.TO, PROPS.getProperty("to"), "Destino do teste \uD83D\uDE0E")//
 					.addBodyHtml("Texto HTML de teste do <strong>body</strong> &#128545; \uD83D\uDE21")//
 					.addAttachment(MailUtilsTest.class.getResourceAsStream("/META-INF/MailUtilsTest.properties"),
 							MediaType.TEXT_PLAIN, "teste.txt")//
-					.build(MailUtils::send);
+					.build(MailUtils::send));
 		}
 	}
 

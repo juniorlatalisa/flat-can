@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.function.Function;
 
 import javax.activation.DataHandler;
@@ -169,10 +170,11 @@ public class MimeMessageBuilder implements Builder<MimeMessage> {
 	}
 
 	private static final Function<DataHandler, String> CONTENT_ID_RESOLVER = DataHandler::getName;
+
 	private Function<DataHandler, String> attachmentIDReolver = CONTENT_ID_RESOLVER;
 
 	public MimeMessageBuilder setAttachmentID(Function<DataHandler, String> reolver) {
-		this.attachmentIDReolver = reolver;
+		this.attachmentIDReolver = Optional.ofNullable(reolver).orElse(CONTENT_ID_RESOLVER);
 		return this;
 	}
 
