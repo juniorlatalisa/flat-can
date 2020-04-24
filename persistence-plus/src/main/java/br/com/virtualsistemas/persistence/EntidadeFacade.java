@@ -11,7 +11,7 @@ public abstract class EntidadeFacade<E extends Entidade, K extends Serializable>
 
 	protected abstract JPAFacade getFacade();
 
-	protected abstract Class<E> getEntityClass();
+	protected abstract Class<? extends E> getEntityClass();
 
 	public abstract E novo();
 

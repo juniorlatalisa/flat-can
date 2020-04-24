@@ -1,7 +1,9 @@
 package br.com.virtualsistemas.common.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -11,14 +13,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
+import br.com.virtualsistemas.common.Constants;
+
 /**
  * Simplificar acesso aos metos relacionados a arquivos
  * 
  * @author juniorlatalisa
  */
 public class FileUtils {
-	
-	private FileUtils() {}
+
+	private FileUtils() {
+	}
 
 	/**
 	 * @see File#lastModified()
@@ -106,6 +111,32 @@ public class FileUtils {
 		return read(file.toPath());
 	}
 
+	public static byte[] read(URL url) {
+		try {
+			return read(url.openStream(), 512);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static byte[] read(InputStream is, int bufferSize) {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		try {
+			try {
+				byte[] buffer = new byte[(bufferSize > 0) ? bufferSize : is.available()];
+				int n;
+				while ((n = is.read(buffer)) > 0) {
+					out.write(buffer, 0, n);
+				}
+			} finally {
+				is.close();
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return out.toByteArray();
+	}
+
 	/**
 	 * @see Files#write(Path, byte[], OpenOption...)
 	 * @see IOException
@@ -120,5 +151,25 @@ public class FileUtils {
 
 	public static void write(File file, byte[] bytes, OpenOption... options) {
 		write(file.toPath(), bytes, options);
+	}
+
+	public static String checksum(byte[] value, String algorithm) {
+		return StringUtils.encodeHEX(CryptoUtils.encrypt(value, algorithm));
+	}
+
+	public static String checksum(Path path) {
+		return checksum(read(path), Constants.SHA256_ALGORITHM);
+	}
+
+	public static String checksum(File file) {
+		return checksum(read(file), Constants.SHA256_ALGORITHM);
+	}
+
+	public static String checksum(URL url) {
+		return checksum(read(url), Constants.SHA256_ALGORITHM);
+	}
+
+	public static String checksum(InputStream is) {
+		return checksum(read(is, -1), Constants.SHA256_ALGORITHM);
 	}
 }
