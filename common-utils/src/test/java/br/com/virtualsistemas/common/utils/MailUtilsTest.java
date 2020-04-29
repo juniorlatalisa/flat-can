@@ -52,8 +52,8 @@ public class MailUtilsTest {
 	@Test
 	public void send() {
 		if (!PROPS.isEmpty()) {
-			Assert.assertTrue(new MimeMessageBuilder(PROPS//
-					.getProperty("host"), // host
+			Assert.assertTrue(new MimeMessageBuilder(//
+					PROPS.getProperty("host"), // host
 					Integer.parseInt(PROPS.getProperty("port"), 10), // port
 					PROPS.getProperty("user"), // user
 					PROPS.getProperty("password")// password

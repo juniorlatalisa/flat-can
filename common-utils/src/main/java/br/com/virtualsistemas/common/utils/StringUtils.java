@@ -350,5 +350,13 @@ public class StringUtils {
 		}
 		return jsonb;
 	}
-
+	
+	public static boolean isNotEmpty(String... values) {
+		for (String value : values) {
+			if ((value == null) || (value.isEmpty())) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
