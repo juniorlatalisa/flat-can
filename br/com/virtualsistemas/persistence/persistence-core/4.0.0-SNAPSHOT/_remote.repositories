@@ -1,5 +1,5 @@
 #NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Wed Apr 15 03:57:21 BRT 2020
+#Thu Apr 30 19:57:02 BRT 2020
 persistence-core-4.0.0-SNAPSHOT-javadoc.jar>=
 persistence-core-4.0.0-SNAPSHOT.jar>=
 persistence-core-4.0.0-SNAPSHOT-tests.jar>=
