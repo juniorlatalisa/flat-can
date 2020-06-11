@@ -32,6 +32,9 @@ public class MailUtilsTest {
 			} finally {
 				is.close();
 			}
+			if (!PROPS.containsKey("host")) {
+				PROPS.clear();
+			}
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
