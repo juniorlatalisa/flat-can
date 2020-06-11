@@ -1,9 +1,11 @@
 package br.com.virtualsistemas.persistence.jdbc;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.UUID;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 
 import org.hibernate.Session;
 import org.junit.Assert;
@@ -63,6 +65,17 @@ public class ConnectionFacadeTest {
 		@Override
 		protected Connection getConnection() {
 			return connection;
+		}
+
+		@Override
+		public void close() {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				throw new PersistenceException(e);
+			}
 		}
 	}
 }

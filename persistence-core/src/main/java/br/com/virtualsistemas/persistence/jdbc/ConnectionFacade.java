@@ -24,6 +24,8 @@ public abstract class ConnectionFacade {
 
 	protected abstract Connection getConnection();
 
+	public abstract void close();
+
 	protected Statement getStatement(int startResult) throws SQLException {
 		return (VSPersistence.START_RESULT_NONE == startResult) ? getConnection().createStatement()
 				: getConnection().createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -127,8 +129,19 @@ public abstract class ConnectionFacade {
 		public JDBCIterator(String queryValue, Map<Object, Object> params, int startResult, int maxResults) {
 			try {
 				this.statement = getStatement(queryValue, params, startResult);
-				this.resultSet = getResultSet(statement, queryValue, startResult, maxResults);
-				this.columnCount = resultSet.getMetaData().getColumnCount();
+				try {
+					this.resultSet = getResultSet(statement, queryValue, startResult, maxResults);
+				} catch (SQLException e) {
+					this.statement.close();
+					throw e;
+				}
+				try {
+					this.columnCount = resultSet.getMetaData().getColumnCount();
+				} catch (SQLException e) {
+					this.statement.close();
+					this.resultSet.close();
+					throw e;
+				}
 			} catch (SQLException e) {
 				throw new PersistenceException(e);
 			}
@@ -154,7 +167,7 @@ public abstract class ConnectionFacade {
 				throw new PersistenceException(e);
 			}
 		}
-		
+
 		protected void close() throws SQLException {
 			try {
 				this.resultSet.close();
