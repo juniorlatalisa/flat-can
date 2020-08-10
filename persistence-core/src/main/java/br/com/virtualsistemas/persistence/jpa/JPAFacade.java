@@ -142,6 +142,32 @@ public abstract class JPAFacade {
 		}
 	}
 
+	/**
+	 * @param <T>
+	 * @param queryStrategy
+	 * @param queryValue
+	 * @param params
+	 * @return
+	 * @see Query#getSingleResult()
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends Serializable> T single(QueryStrategy queryStrategy, Serializable queryValue,
+			Map<Object, Object> params) {
+		Query query = createQuery(queryStrategy, queryValue, params);
+		setParams(queryStrategy, query, params, VSPersistence.START_RESULT_NONE, VSPersistence.MAX_RESULT_NONE);
+		return (T) query.getSingleResult();
+	}
+
+	/**
+	 * @param <T>
+	 * @param queryStrategy
+	 * @param queryValue
+	 * @param params
+	 * @param startResult
+	 * @param maxResults
+	 * @return
+	 * @see Query#getResultList()
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> List<T> list(QueryStrategy queryStrategy, Serializable queryValue, Map<Object, Object> params,
 			int startResult, int maxResults) {
@@ -150,6 +176,13 @@ public abstract class JPAFacade {
 		return query.getResultList();
 	}
 
+	/**
+	 * @param queryStrategy
+	 * @param queryValue
+	 * @param params
+	 * @return
+	 * @see Query#executeUpdate()
+	 */
 	public int execute(QueryStrategy queryStrategy, Serializable queryValue, Map<Object, Object> params) {
 		Query query = createQuery(queryStrategy, queryValue, params);
 		setParams(queryStrategy, query, params);
@@ -161,31 +194,57 @@ public abstract class JPAFacade {
 		return new JPAIterator<T>(queryStrategy, queryValue, params, startResult);
 	}
 
+	/**
+	 * @param <T>
+	 * @param entityClass
+	 * @param primaryKey
+	 * @return
+	 * @see EntityManager#getReference(Class, Object)
+	 */
 	public <T extends Serializable> T reference(Class<T> entityClass, Serializable primaryKey) {
 		return getEntityManager().getReference(entityClass, primaryKey);
 	}
 
+	/**
+	 * @param <T>
+	 * @param entityClass
+	 * @param primaryKey
+	 * @return
+	 * @see EntityManager#find(Class, Object)
+	 */
 	public <T extends Serializable> T find(Class<T> entityClass, Serializable primaryKey) {
 		return getEntityManager().find(entityClass, primaryKey);
 	}
 
+	/**
+	 * @param <T>
+	 * @param entity
+	 * @return
+	 * @see EntityManager#merge(Object)
+	 */
 	public <T extends Serializable> T update(T entity) {
 		return getEntityManager().merge(entity);
 	}
-	
+
 	public <T extends Serializable> List<T> update(List<T> entities) {
 		EntityManager em = getEntityManager();
-		return entities.stream().map(entity->em.merge(entity)).collect(Collectors.toList());
+		return entities.stream().map(entity -> em.merge(entity)).collect(Collectors.toList());
 	}
 
+	/**
+	 * @param <T>
+	 * @param entity
+	 * @return
+	 * @see EntityManager#persist(Object)
+	 */
 	public <T extends Serializable> T insert(T entity) {
 		getEntityManager().persist(entity);
 		return entity;
 	}
-	
+
 	public <T extends Serializable> List<T> insert(List<T> entities) {
 		EntityManager em = getEntityManager();
-		entities.forEach(entity->em.persist(entity));
+		entities.forEach(entity -> em.persist(entity));
 		return entities;
 	}
 
@@ -201,7 +260,7 @@ public abstract class JPAFacade {
 	public QueryBuilder createQueryBuilder(QueryStrategy queryStrategy, Serializable queryValue) {
 		return new QueryBuilderImpl(queryStrategy, queryValue);
 	}
-	
+
 	public QueryBuilder createQueryBuilder(QueryStrategy queryStrategy, InputStream queryValue) {
 		return createQueryBuilder(queryStrategy, QueryBuilder.load(queryValue, StandardCharsets.UTF_8));
 	}

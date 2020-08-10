@@ -35,7 +35,7 @@ public class ResourceLocalFacade extends JPAFacade {
 			}
 		}
 	}
-	
+
 	@Override
 	public int execute(QueryStrategy queryStrategy, Serializable queryValue, Map<Object, Object> params) {
 		return transaction(() -> super.execute(queryStrategy, queryValue, params));
@@ -64,6 +64,13 @@ public class ResourceLocalFacade extends JPAFacade {
 	@Override
 	public <T extends Serializable> boolean delete(Class<T> entityClass, Serializable primaryKey) {
 		return transaction(() -> super.delete(entityClass, primaryKey));
+	}
+
+	@Override
+	public <T extends Serializable> T single(QueryStrategy queryStrategy, Serializable queryValue,
+			Map<Object, Object> params) {
+		getEntityManager().clear();
+		return super.single(queryStrategy, queryValue, params);
 	}
 
 	@Override

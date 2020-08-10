@@ -103,6 +103,12 @@ public class JPAFacadeTest {
 	}
 
 	@Test
+	public void single() {
+		Assert.assertNotNull(instancia.single(QueryStrategy.DEFAULT, "select count(*) from EntityTest", //
+				VSPersistence.PARAMS_NONE));
+	}
+
+	@Test
 	public void list1() {
 		List<EntityTest> lista1 = Arrays.asList(instancia.find(EntityTest.class, getId()),
 				instancia.find(EntityTest.class, getId()));
