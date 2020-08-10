@@ -43,6 +43,10 @@ public class MapBuilder<K, V> implements Builder<Map<K, V>> {
 		return this;
 	}
 
+	public static <K, V> MapBuilder<K, V> builder() {
+		return new MapBuilder<K, V>();
+	}
+
 	@SafeVarargs
 	@SuppressWarnings("unchecked")
 	public static <K, V> Map<K, V> build(K key, V value, Object... more) {

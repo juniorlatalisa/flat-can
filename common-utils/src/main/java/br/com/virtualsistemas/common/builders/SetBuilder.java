@@ -49,10 +49,14 @@ public class SetBuilder<E> implements Builder<Set<E>> {
 		return this;
 	}
 
+	public static <E> SetBuilder<E> builder() {
+		return new SetBuilder<E>();
+	}
+
 	@SafeVarargs
 	public static <E> Set<E> build(E... elements) {
 		Set<E> source = new HashSet<E>(elements.length);
-		for (E e : source) {
+		for (E e : elements) {
 			source.add(e);
 		}
 		return source;

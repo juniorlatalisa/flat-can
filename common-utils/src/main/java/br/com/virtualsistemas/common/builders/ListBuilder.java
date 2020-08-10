@@ -70,11 +70,15 @@ public class ListBuilder<E> implements Builder<List<E>> {
 		return this;
 	}
 
+	public static <E> ListBuilder<E> builder() {
+		return new ListBuilder<E>();
+	}
+
 	@SafeVarargs
 	public static <E> List<E> build(E... elements) {
 		List<E> source = new ArrayList<E>(elements.length);
-		for (E e : source) {
-			source.add(e);	
+		for (E e : elements) {
+			source.add(e);
 		}
 		return source;
 	}

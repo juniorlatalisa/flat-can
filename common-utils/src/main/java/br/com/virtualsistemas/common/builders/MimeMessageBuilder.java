@@ -219,4 +219,8 @@ public class MimeMessageBuilder implements Builder<MimeMessage> {
 			throw new RuntimeException(e);
 		}
 	}
+
+	public static MimeMessageBuilder builder(String host, int port, String user, String password) {
+		return new MimeMessageBuilder(host, port, user, password);
+	}
 }

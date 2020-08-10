@@ -477,4 +477,8 @@ public class DateBuilder implements Builder<Date> {
 	public int hashCode() {
 		return source.hashCode();
 	}
+
+	public static DateBuilder builder() {
+		return new DateBuilder();
+	}
 }
