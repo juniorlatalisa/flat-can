@@ -118,6 +118,10 @@ public class FileUtils {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static byte[] read(InputStream is) {
+		return read(is, -1);
+	}
 
 	public static byte[] read(InputStream is, int bufferSize) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
