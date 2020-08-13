@@ -75,9 +75,19 @@ public class ListBuilder<E> implements Builder<List<E>> {
 	}
 
 	@SafeVarargs
-	public static <E> List<E> build(E... elements) {
-		List<E> source = new ArrayList<E>(elements.length);
-		for (E e : elements) {
+	public static <E> ListBuilder<E> builder(E element, E... more) {
+		return new ListBuilder<E>(build(element, more));
+	}
+
+	public static <E> ListBuilder<E> builder(Collection<E> elements) {
+		return new ListBuilder<E>(new ArrayList<E>(elements));
+	}
+
+	@SafeVarargs
+	public static <E> List<E> build(E element, E... more) {
+		List<E> source = new ArrayList<E>(more.length + 1);
+		source.add(element);
+		for (E e : more) {
 			source.add(e);
 		}
 		return source;

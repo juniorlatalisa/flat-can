@@ -43,8 +43,13 @@ public class MapBuilder<K, V> implements Builder<Map<K, V>> {
 		return this;
 	}
 
-	public static <K, V> MapBuilder<K, V> builder() {
-		return new MapBuilder<K, V>();
+	@SafeVarargs
+	public static <K, V> MapBuilder<K, V> builder(K key, V value, Object... more) {
+		return new MapBuilder<K, V>(build(key, value, more));
+	}
+
+	public static <K, V> MapBuilder<K, V> builder(Map<K, V> elements) {
+		return new MapBuilder<K, V>(new HashMap<K, V>(elements));
 	}
 
 	@SafeVarargs
