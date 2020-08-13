@@ -21,26 +21,31 @@ public class MailUtils {
 		MailUtils.debug = debug;
 	}
 
+	public static Session getSession(Properties properties, String user, String password) {
+		Session session = Session.getInstance(properties, getAuthenticator(user, password));
+		session.setDebug(MailUtils.debug);
+		return session;
+	}
+
 	public static Session getSession(String host, int port, String user, String password) {
-		Properties props = new Properties(System.getProperties());
+		Properties properties = new Properties(System.getProperties());
 		if (port == 587) {
-			props.setProperty("mail.smtp.auth", "true");
-			props.setProperty("mail.smtp.connectiontimeout", "5000");
-			props.setProperty("mail.smtp.starttls.enable", "true");
-			props.setProperty("mail.smtp.port", "587");
-			props.setProperty("mail.smtp.host", host);
+			properties.setProperty("mail.smtp.host", host);
+			properties.setProperty("mail.smtp.port", "587");
+			properties.setProperty("mail.smtp.ssl.trust", host);
+			properties.setProperty("mail.smtp.auth", "true");
+			properties.setProperty("mail.smtp.connectiontimeout", "5000");
+			properties.setProperty("mail.smtp.starttls.enable", "true");
 		} else if (port == 465) {
-			props.setProperty("mail.smtps.auth", "true");
-			props.setProperty("mail.smtps.connectiontimeout", "5000");
-			props.setProperty("mail.smtps.ssl.trust", host);
-			props.setProperty("mail.smtps.port", "465");
-			props.setProperty("mail.smtps.host", host);
+			properties.setProperty("mail.smtps.host", host);
+			properties.setProperty("mail.smtps.port", "465");
+			properties.setProperty("mail.smtps.ssl.trust", host);
+			properties.setProperty("mail.smtps.auth", "true");
+			properties.setProperty("mail.smtps.connectiontimeout", "5000");
 		} else {
 			throw new RuntimeException("Unknow port: " + port);
 		}
-		Session session = Session.getInstance(props, getAuthenticator(user, password));
-		session.setDebug(MailUtils.debug);
-		return session;
+		return getSession(properties, user, password);
 	}
 
 	public static Authenticator getAuthenticator(String user, String password) {
