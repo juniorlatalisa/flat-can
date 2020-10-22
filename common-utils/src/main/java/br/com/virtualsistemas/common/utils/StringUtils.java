@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -31,7 +32,7 @@ import br.com.virtualsistemas.common.builders.MapBuilder;
  * @author juniorlatalisa
  */
 public class StringUtils {
-	
+
 	private StringUtils() {}
 
 	private static final Map<String, DecimalFormat> decimalFormat = new HashMap<>();
@@ -180,7 +181,7 @@ public class StringUtils {
 			return defaultValue;
 		}
 	}
-	
+
 	public static double currencyToDouble(String value, Locale locale) {
 		try {
 			return NumberFormat.getCurrencyInstance(locale).parse(value).doubleValue();
@@ -188,7 +189,7 @@ public class StringUtils {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public static double currencyToDouble(String value) {
 		return currencyToDouble(value, Constants.BRAZIL);
 	}
@@ -292,6 +293,10 @@ public class StringUtils {
 		return new BigInteger(value, 16).toByteArray();
 	}
 
+	public static <T> T decodeHEX(String value, Function<byte[], T> converter) {
+		return converter.apply(decodeHEX(value));
+	}
+
 	/**
 	 * @see URLEncoder#encode(String, String)
 	 */
@@ -319,6 +324,10 @@ public class StringUtils {
 	 */
 	public static byte[] encodeBase64(String value) {
 		return Base64.getEncoder().encode(value.getBytes(StandardCharsets.UTF_8));
+	}
+
+	public static <T> T encodeBase64(String value, Function<byte[], T> converter) {
+		return converter.apply(encodeBase64(value));
 	}
 
 	/**
@@ -350,7 +359,7 @@ public class StringUtils {
 		}
 		return jsonb;
 	}
-	
+
 	public static boolean isNotEmpty(String... values) {
 		for (String value : values) {
 			if ((value == null) || (value.isEmpty())) {
