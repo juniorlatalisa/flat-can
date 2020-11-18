@@ -42,9 +42,16 @@ public class MailUtils {
 		}
 	}
 
-	public static boolean send(Message message, String user, String password) {
+	public static boolean send(Message message, MailSessionData data) {
 		try {
-			Transport.send(message, user, password);
+			message.saveChanges();// do this first
+			Transport transport = message.getSession().getTransport(data.getProtocol());
+			transport.connect(data.getUser(), data.getPassword());
+			try {
+				transport.sendMessage(message, message.getAllRecipients());
+			} finally {
+				transport.close();
+			}
 			return true;
 		} catch (MessagingException e) {
 			return false;
