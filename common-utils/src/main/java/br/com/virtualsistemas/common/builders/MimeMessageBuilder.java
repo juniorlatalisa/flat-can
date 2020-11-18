@@ -21,11 +21,9 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
-import br.com.virtualsistemas.common.utils.MailUtils;
-
 public class MimeMessageBuilder implements Builder<MimeMessage> {
 
-	protected MimeMessageBuilder(Session session) {
+	public MimeMessageBuilder(Session session) {
 		System.setProperty("mail.mime.encodefilename", "true");
 		try {
 			(this.message = new MimeMessage(session))//
@@ -34,11 +32,6 @@ public class MimeMessageBuilder implements Builder<MimeMessage> {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public MimeMessageBuilder(String host, int port, String user, String password) {
-		this(MailUtils.getSession(host, port, user, password));
-		setFrom(user);
 	}
 
 	private MimeMessage message;
@@ -218,9 +211,5 @@ public class MimeMessageBuilder implements Builder<MimeMessage> {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static MimeMessageBuilder builder(String host, int port, String user, String password) {
-		return new MimeMessageBuilder(host, port, user, password);
 	}
 }

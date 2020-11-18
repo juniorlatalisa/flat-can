@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Properties;
-import java.util.UUID;
 
 import javax.mail.Message.RecipientType;
 import javax.ws.rs.core.MediaType;
@@ -13,11 +12,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.virtualsistemas.common.builders.MimeMessageBuilder;
+import br.com.virtualsistemas.common.utils.MailUtils.MailSessionData;
 
 public class MailUtilsTest {
 
-	private static final Properties PROPS = new Properties(System.getProperties());
+	private static MailSessionData data = null;
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -27,13 +26,23 @@ public class MailUtilsTest {
 			return;
 		}
 		try {
+			Properties properties = new Properties();
 			try {
-				PROPS.load(is);
+				properties.load(is);
 			} finally {
 				is.close();
 			}
-			if (!PROPS.containsKey("host")) {
-				PROPS.clear();
+			if (properties.containsKey("host")) {
+				(data = new MailSessionData())//
+						.setHost(properties.getProperty("host"))//
+						.setUser(properties.getProperty("user"))//
+						.setPassword(properties.getProperty("password"))//
+						.setPort(properties.getProperty("port"))
+						.setAddress(properties.getProperty("address"))//
+						.setProtocol(properties.getProperty("protocol"))//
+				;
+			} else {
+				data = null;
 			}
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
@@ -41,31 +50,16 @@ public class MailUtilsTest {
 	}
 
 	@Test
-	public void build() {
-		if (!PROPS.isEmpty()) {
-			Assert.assertNotNull(new MimeMessageBuilder(PROPS//
-					.getProperty("host"), // host
-					Integer.parseInt(PROPS.getProperty("port"), 10), // port
-					PROPS.getProperty("user"), // user
-					PROPS.getProperty("password")// password
-			).build());
-		}
-	}
-
-	@Test
 	public void send() {
-		if (!PROPS.isEmpty()) {
-			Assert.assertTrue(new MimeMessageBuilder(//
-					PROPS.getProperty("host"), // host
-					Integer.parseInt(PROPS.getProperty("port"), 10), // port
-					PROPS.getProperty("user"), // user
-					PROPS.getProperty("password")// password
-			)//
+		if (data != null) {
+			Assert.assertTrue(MailUtils.//
+					createMimeMessageBuilder(data)//
 					.addHeader("virtual-teste", "header-test")//
 					// .addHeader("Disposition-Notification-To", PROPS.getProperty("user"))//
-					.setFrom(PROPS.getProperty("user"), "Origem do teste \uD83D\uDE00")//
-					.setConfirmation(PROPS.getProperty("user")).setSubject("\uD83C\uDF55".concat(new Date().toString()))//
-					.addRecipient(RecipientType.TO, PROPS.getProperty("to"), "Destino do teste \uD83D\uDE0E")//
+					.setFrom(data.getAddress(), "Origem do teste \uD83D\uDE00")//
+					.setConfirmation(data.getAddress())//
+					.setSubject("\uD83C\uDF55".concat(new Date().toString()))//
+					.addRecipient(RecipientType.TO, "paraojuniorler@gmail.com", "Destino do teste \uD83D\uDE0E")//
 					.addBodyHtml("Texto HTML de teste do <strong>body</strong> &#128545; \uD83D\uDE21")//
 					.addAttachment(MailUtilsTest.class.getResourceAsStream("/META-INF/MailUtilsTest.properties"),
 							MediaType.TEXT_PLAIN, "teste.txt")//
@@ -75,25 +69,15 @@ public class MailUtilsTest {
 
 	@Test
 	public void authentication() {
-		if (!PROPS.isEmpty()) {
-			Assert.assertTrue(MailUtils.authentication(PROPS//
-					.getProperty("host"), // host
-					Integer.parseInt(PROPS.getProperty("port"), 10), // port
-					PROPS.getProperty("user"), // user
-					PROPS.getProperty("password")// password
-			));
+		if (data != null) {
+			Assert.assertTrue(MailUtils.authentication(data));
 		}
 	}
 
-	@Test
-	public void authenticationFail() {
-		if (!PROPS.isEmpty()) {
-			Assert.assertFalse(MailUtils.authentication(PROPS//
-					.getProperty("host"), // host
-					Integer.parseInt(PROPS.getProperty("port"), 10), // port
-					PROPS.getProperty("user"), // user
-					UUID.randomUUID().toString()// password
-			));
-		}
-	}
+//	@Test
+//	public void authenticationFail() {
+//		if (data != null) {
+//			Assert.assertFalse(MailUtils.authentication(data));
+//		}
+//	}
 }
