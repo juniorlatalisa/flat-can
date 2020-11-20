@@ -88,8 +88,11 @@ public class MailUtils {
 	}
 
 	public static Session getSession(MailSessionData data) {
-		Properties properties = new Properties();
-		String protocol = "mail.".concat((data.getProtocol() == null || data.getProtocol().isEmpty()) //
+		final Properties properties = (data.getProperties() == null || data.getProperties().isEmpty())//
+				? new Properties()
+				: new Properties(data.getProperties());
+
+		final String protocol = "mail.".concat((data.getProtocol() == null || data.getProtocol().isEmpty()) //
 				? "smtp"
 				: data.getProtocol());
 
@@ -122,9 +125,10 @@ public class MailUtils {
 		private String user;
 		private String password;
 		private String address;
+		private Properties properties;
 
-		private String protocol = "smtp";
 		private Integer port = 465;
+		private String protocol = "smtp";
 		private Boolean auth = Boolean.TRUE;
 		private Boolean startTLS = Boolean.TRUE;
 		private Integer connectionTimeout = 5000;
@@ -211,6 +215,15 @@ public class MailUtils {
 
 		public MailSessionData setPassword(String password) {
 			this.password = password;
+			return this;
+		}
+
+		public Properties getProperties() {
+			return properties;
+		}
+
+		public MailSessionData setProperties(Properties properties) {
+			this.properties = properties;
 			return this;
 		}
 	}
