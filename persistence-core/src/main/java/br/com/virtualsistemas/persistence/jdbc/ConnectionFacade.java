@@ -161,8 +161,7 @@ public abstract class ConnectionFacade {
 					close();
 					return false;
 				}
-				element = (E) getObject(resultSet, columnCount);
-				return true;
+				return (element = (E) getObject(resultSet, columnCount)) != null;
 			} catch (SQLException e) {
 				throw new PersistenceException(e);
 			}

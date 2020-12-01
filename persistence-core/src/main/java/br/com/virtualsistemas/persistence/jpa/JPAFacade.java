@@ -322,8 +322,7 @@ public abstract class JPAFacade {
 			if ((lista == null) || (lista.isEmpty())) {
 				return false;
 			}
-			element = lista.get(0);
-			return true;
+			return (element = lista.get(0)) != null;
 		}
 
 		@Override
