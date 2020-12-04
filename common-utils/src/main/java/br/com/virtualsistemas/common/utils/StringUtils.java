@@ -33,7 +33,8 @@ import br.com.virtualsistemas.common.builders.MapBuilder;
  */
 public class StringUtils {
 
-	private StringUtils() {}
+	private StringUtils() {
+	}
 
 	private static final Map<String, DecimalFormat> decimalFormat = new HashMap<>();
 	private static final Map<String, SimpleDateFormat> simpleDateFormat = MapBuilder.build(Constants.DATE_TIME_PATTERN,
@@ -320,21 +321,21 @@ public class StringUtils {
 	}
 
 	/**
-	 * @see Encoder#encode(byte[])
+	 * @see Decoder#decode(String)
 	 */
-	public static byte[] encodeBase64(String value) {
-		return Base64.getEncoder().encode(value.getBytes(StandardCharsets.UTF_8));
+	public static byte[] decodeBase64(String value) {
+		return Base64.getDecoder().decode(value);
 	}
 
-	public static <T> T encodeBase64(String value, Function<byte[], T> converter) {
-		return converter.apply(encodeBase64(value));
+	public static <T> T decodeBase64(String value, Function<byte[], T> converter) {
+		return converter.apply(decodeBase64(value));
 	}
 
 	/**
-	 * @see Decoder#decode(byte[])
+	 * @see Encoder#encodeToString(byte[])
 	 */
-	public static String decodeBase64(byte[] value) {
-		return new String(Base64.getDecoder().decode(value), StandardCharsets.UTF_8);
+	public static String encodeBase64(byte[] value) {
+		return Base64.getEncoder().encodeToString(value);
 	}
 
 	/**

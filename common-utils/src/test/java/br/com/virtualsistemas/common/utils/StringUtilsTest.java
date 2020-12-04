@@ -26,9 +26,9 @@ public class StringUtilsTest {
 	@Test
 	public void base64() {
 		final String value = "Teste Base 64";
-		byte[] encode = StringUtils.encodeBase64(value);
-		String decode = StringUtils.decodeBase64(encode);
-		Assert.assertTrue(value.equals(decode));
+		String encode = StringUtils.encodeBase64(value.getBytes());
+		byte[] decode = StringUtils.decodeBase64(encode);
+		Assert.assertTrue(value.equals(new String(decode)));
 	}
 
 	@Test
