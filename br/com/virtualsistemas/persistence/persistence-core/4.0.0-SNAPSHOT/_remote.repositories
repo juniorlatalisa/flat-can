@@ -1,8 +1,8 @@
 #NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Thu Apr 30 19:57:02 BRT 2020
-persistence-core-4.0.0-SNAPSHOT-javadoc.jar>=
+#Mon Dec 14 10:14:14 BRT 2020
 persistence-core-4.0.0-SNAPSHOT.jar>=
 persistence-core-4.0.0-SNAPSHOT-tests.jar>=
 persistence-core-4.0.0-SNAPSHOT-sources.jar>=
-persistence-core-4.0.0-SNAPSHOT.pom>=
+persistence-core-4.0.0-SNAPSHOT-javadoc.jar>=
 persistence-core-4.0.0-SNAPSHOT-test-sources.jar>=
+persistence-core-4.0.0-SNAPSHOT.pom>=

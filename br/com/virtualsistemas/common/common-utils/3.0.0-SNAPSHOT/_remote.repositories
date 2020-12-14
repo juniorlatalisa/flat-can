@@ -1,8 +1,8 @@
 #NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Thu Apr 30 19:56:35 BRT 2020
+#Mon Dec 14 10:13:56 BRT 2020
+common-utils-3.0.0-SNAPSHOT.jar>=
+common-utils-3.0.0-SNAPSHOT-javadoc.jar>=
+common-utils-3.0.0-SNAPSHOT-test-sources.jar>=
 common-utils-3.0.0-SNAPSHOT-sources.jar>=
 common-utils-3.0.0-SNAPSHOT.pom>=
-common-utils-3.0.0-SNAPSHOT-test-sources.jar>=
 common-utils-3.0.0-SNAPSHOT-tests.jar>=
-common-utils-3.0.0-SNAPSHOT-javadoc.jar>=
-common-utils-3.0.0-SNAPSHOT.jar>=
