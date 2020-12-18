@@ -7,41 +7,41 @@
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
-    <lastUpdated>20201214131356</lastUpdated>
+    <lastUpdated>20201218140936</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <classifier>javadoc</classifier>
         <extension>jar</extension>
         <value>3.0.0-SNAPSHOT</value>
-        <updated>20201214131356</updated>
+        <updated>20201218140936</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>test-sources</classifier>
         <extension>jar</extension>
         <value>3.0.0-SNAPSHOT</value>
-        <updated>20201214131356</updated>
+        <updated>20201218140936</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>sources</classifier>
         <extension>jar</extension>
         <value>3.0.0-SNAPSHOT</value>
-        <updated>20201214131356</updated>
+        <updated>20201218140936</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>tests</classifier>
         <extension>jar</extension>
         <value>3.0.0-SNAPSHOT</value>
-        <updated>20201214131356</updated>
+        <updated>20201218140936</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>jar</extension>
         <value>3.0.0-SNAPSHOT</value>
-        <updated>20201214131356</updated>
+        <updated>20201218140936</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
         <value>3.0.0-SNAPSHOT</value>
-        <updated>20201214131356</updated>
+        <updated>20201218140936</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
