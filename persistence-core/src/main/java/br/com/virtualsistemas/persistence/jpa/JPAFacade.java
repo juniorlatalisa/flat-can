@@ -276,6 +276,11 @@ public abstract class JPAFacade {
 		private Serializable queryValue;
 
 		@Override
+		public <T> T single() {
+			return JPAFacade.this.single(queryStrategy, queryValue, getParams());
+		}
+
+		@Override
 		public int execute() {
 			return JPAFacade.this.execute(queryStrategy, queryValue, getParams());
 		}

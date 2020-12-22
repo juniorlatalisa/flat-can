@@ -212,6 +212,11 @@ public abstract class ConnectionFacade {
 		private String queryValue;
 
 		@Override
+		public <T> T single() {
+			throw new PersistenceException("unsuported single");
+		}
+
+		@Override
 		public int execute() {
 			return ConnectionFacade.this.execute(queryValue, getParams());
 		}

@@ -114,6 +114,8 @@ public abstract class QueryBuilder {
 
 	public abstract <T> List<T> list();
 
+	public abstract <T> T single();
+
 	public <T, R> R list(Function<List<T>, R> function) {
 		return function.apply(list());
 	}
