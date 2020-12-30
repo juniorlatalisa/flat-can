@@ -1,7 +1,9 @@
 package br.com.virtualsistemas.common.utils;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Properties;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 import javax.mail.AuthenticationFailedException;
@@ -20,8 +22,15 @@ public class MailUtils {
 	private static final Logger LOGGER = Logger.getLogger("MailUtils");
 	private static boolean debug = false;
 
+	private static Function<MessagingException, Boolean> handleMessagingException = exception -> false;
+
 	public static void setDebug(boolean debug) {
 		MailUtils.debug = debug;
+	}
+
+	public static void setHandleMessagingException(Function<MessagingException, Boolean> handleMessagingException) {
+		Objects.requireNonNull(handleMessagingException);
+		MailUtils.handleMessagingException = handleMessagingException;
 	}
 
 	public static Authenticator getAuthenticator(String user, String password) {
@@ -38,7 +47,7 @@ public class MailUtils {
 			Transport.send(message);
 			return true;
 		} catch (MessagingException e) {
-			return false;
+			return handleMessagingException.apply(e);
 		}
 	}
 
@@ -54,7 +63,7 @@ public class MailUtils {
 			}
 			return true;
 		} catch (MessagingException e) {
-			return false;
+			return handleMessagingException.apply(e);
 		}
 	}
 
@@ -75,7 +84,7 @@ public class MailUtils {
 			if (!(e instanceof AuthenticationFailedException)) {
 				LOGGER.warning(e.getMessage());
 			}
-			return false;
+			return handleMessagingException.apply(e);
 		}
 	}
 
