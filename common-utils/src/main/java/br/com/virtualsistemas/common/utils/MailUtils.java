@@ -1,9 +1,13 @@
 package br.com.virtualsistemas.common.utils;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.function.Function;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.mail.AuthenticationFailedException;
@@ -20,12 +24,40 @@ import br.com.virtualsistemas.common.builders.MimeMessageBuilder;
 public class MailUtils {
 
 	private static final Logger LOGGER = Logger.getLogger("MailUtils");
+	private static final PrintStream DEBUG_OUT = new PrintStream(new OutputStream() {
+
+		private final StringBuilder buffer = new StringBuilder();
+		private final String sourceClass = MailUtils.class.getName();
+
+		@Override
+		public void write(int b) throws IOException {
+			buffer.append((char) b);
+		}
+
+		@Override
+		public void flush() throws IOException {
+			String log;
+			synchronized (buffer) {
+				log = buffer.toString();
+				buffer.setLength(0);
+			}
+			if (!(log == null || log.isEmpty() || log.equals("\r\n"))) {
+				LOGGER.logp(Level.INFO, sourceClass, "debug", log);
+			}
+		};
+	}, true);
+
 	private static boolean debug = false;
+	private static PrintStream debugOut = null;
 
 	private static Function<MessagingException, Boolean> handleMessagingException = exception -> false;
 
 	public static void setDebug(boolean debug) {
 		MailUtils.debug = debug;
+	}
+
+	public void setDebugOut(PrintStream debugOut) {
+		MailUtils.debugOut = debugOut;
 	}
 
 	public static void setHandleMessagingException(Function<MessagingException, Boolean> handleMessagingException) {
@@ -118,6 +150,7 @@ public class MailUtils {
 
 	public static Session getSession(Properties properties, String user, String password) {
 		Session session = Session.getInstance(properties, getAuthenticator(user, password));
+		session.setDebugOut((MailUtils.debugOut == null) ? MailUtils.DEBUG_OUT : MailUtils.debugOut);
 		session.setDebug(MailUtils.debug);
 		return session;
 	}
