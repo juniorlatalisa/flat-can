@@ -4,22 +4,41 @@ import java.io.Serializable;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.validation.Validation;
 import javax.validation.constraints.Size;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.com.virtualsistemas.persistence.jpa.JPAFacade;
+import br.com.virtualsistemas.persistence.jpa.ResourceLocalFacade;
 
 public abstract class TesteEntidade<E extends Entidade> {
 
 	protected static final Logger log = Logger.getLogger("TesteEntidade");
 
-	@BeforeClass
-	static void beforeClass() {
-		log.info("Validador configurado: " + Validation.buildDefaultValidatorFactory().getValidator());
+	protected static ResourceLocalFacade facade = null;
+	protected static EntityManagerFactory factory = null;
+	
+	public static JPAFacade getJPAFacade() {
+		return facade;
+	}
+	
+	public static EntityManagerFactory getEntityManagerFactory() {
+		return factory;
+	}
+
+	protected static void beforeClass(String persistenceUnitName) {
+		if (factory == null) {
+			factory = Persistence.createEntityManagerFactory(persistenceUnitName);
+			factory.createEntityManager().close();
+		}
+		if (facade == null) {
+			log.info("Validador configurado: " + Validation.buildDefaultValidatorFactory().getValidator());
+			facade = new ResourceLocalFacade(factory.createEntityManager());
+		}
 		/*
 		<dependency>
 			<groupId>org.glassfish</groupId>
@@ -38,7 +57,17 @@ public abstract class TesteEntidade<E extends Entidade> {
 
 	protected abstract E criar();
 
-	protected abstract JPAFacade getFacade();
+	protected JPAFacade getFacade() {
+		return facade;
+	}
+	
+	protected void detach(Object entity) {
+		facade.getEntityManager().detach(entity);
+	}
+
+	protected EntityManagerFactory getFactory() {
+		return factory;
+	}
 
 	protected void testeCopiavel(E origem, Copiavel<E> destino) {
 		if (!remover(origem)) {
@@ -52,7 +81,7 @@ public abstract class TesteEntidade<E extends Entidade> {
 		entidade.setNome("");
 		getFacade().update(entidade);
 	}
-	
+
 	protected void nomeNulo(Nomeavel entidade) {
 		entidade.setNome(null);
 		getFacade().update(entidade);

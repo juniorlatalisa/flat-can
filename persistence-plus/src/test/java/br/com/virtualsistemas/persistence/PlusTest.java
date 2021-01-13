@@ -1,6 +1,5 @@
 package br.com.virtualsistemas.persistence;
 
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.PersistenceUnitTransactionType;
 import javax.validation.ConstraintViolationException;
 
@@ -17,21 +16,19 @@ import br.com.virtualsistemas.persistence.jpa.ResourceLocalFacade;
 
 public class PlusTest extends TesteEntidade<PlusEntityTest> {
 
-	private static JPAFacade facade;
-
 	@BeforeClass
 	public static void beforeClass() {
-		TesteEntidade.beforeClass();
-		final EntityManagerFactory emf = new EntityManagerFactoryBuilder()
+		final String persistenceUnitName = "VSPersistenceTestRuntime";
+		TesteEntidade.factory = new EntityManagerFactoryBuilder()
 				.setProperty("javax.persistence.jdbc.url",
 						"jdbc:h2:mem:vspersistence_runtime;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=TRUE")
 				.setProperty("javax.persistence.jdbc.driver", org.h2.Driver.class.getName())
 				.setProperty("hibernate.dialect", H2Dialect.class.getName())
-				.setProperty("hibernate.hbm2ddl.auto", "update").setPersistenceUnitName("VSPersistenceTestRuntime")
+				.setProperty("hibernate.hbm2ddl.auto", "update").setPersistenceUnitName(persistenceUnitName)
 				.setPersistenceProviderClassName(HibernatePersistenceProvider.class.getName())
 				.setTransactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL)
 				.setManagedClassNames(PlusEntityTest.class.getName()).build();
-		PlusTest.facade = new ResourceLocalFacade(emf.createEntityManager());
+		TesteEntidade.beforeClass(persistenceUnitName);
 	}
 
 	@AfterClass

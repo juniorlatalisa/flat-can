@@ -5,7 +5,8 @@ import java.util.Comparator;
 
 public interface Codificavel<T extends Number> extends Serializable {
 
-	public static final Comparator<Codificavel<Long>> COMPARATOR_POR_CODIGO = (cn1, cn2) -> cn1.getCodigo()
+	@SuppressWarnings("unchecked")
+	public static final Comparator<Codificavel<? extends Number>> COMPARATOR_POR_CODIGO = (cn1, cn2) -> ((Comparable<Number>)cn1.getCodigo())
 			.compareTo(cn2.getCodigo());
 
 	T getCodigo();

@@ -8,6 +8,8 @@ import javax.persistence.PersistenceException;
 public interface Nomeavel extends Serializable {
 
 	final Comparator<Nomeavel> COMPARATOR_POR_NOME = (cn1, cn2) -> cn1.getNome().compareTo(cn2.getNome());
+	final int DEFAULT_MAX_SIZE = 255;
+	final String NOT_EMPTY_MESSAGE = "{entidade.nome.notempty}";
 
 	String getNome();
 
