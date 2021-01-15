@@ -268,5 +268,41 @@ public class MailUtils {
 			this.properties = properties;
 			return this;
 		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(address, auth, connectionTimeout, host, password, port, properties, protocol, startTLS,
+					user);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			MailSessionData other = (MailSessionData) obj;
+			return Objects.equals(address, other.address) && Objects.equals(auth, other.auth)
+					&& Objects.equals(connectionTimeout, other.connectionTimeout) && Objects.equals(host, other.host)
+					&& Objects.equals(password, other.password) && Objects.equals(port, other.port)
+					&& Objects.equals(properties, other.properties) && Objects.equals(protocol, other.protocol)
+					&& Objects.equals(startTLS, other.startTLS) && Objects.equals(user, other.user);
+		}
+
+		@Override
+		public String toString() {
+			return "MailSessionData [" + (host != null ? "host=" + host + ", " : "")
+					+ (user != null ? "user=" + user + ", " : "")
+					+ (password != null ? "password=" + password.replaceAll(".", "*") + ", " : "")
+					+ (address != null ? "address=" + address + ", " : "")
+					+ (properties != null ? "properties=" + properties + ", " : "")
+					+ (port != null ? "port=" + port + ", " : "")
+					+ (protocol != null ? "protocol=" + protocol + ", " : "")
+					+ (auth != null ? "auth=" + auth + ", " : "")
+					+ (startTLS != null ? "startTLS=" + startTLS + ", " : "")
+					+ (connectionTimeout != null ? "connectionTimeout=" + connectionTimeout : "") + "]";
+		}
 	}
 }
