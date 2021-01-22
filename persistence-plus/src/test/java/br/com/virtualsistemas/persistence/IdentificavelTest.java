@@ -1,0 +1,20 @@
+package br.com.virtualsistemas.persistence;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+public class IdentificavelTest {
+
+	@Test
+	public void comparator() {
+		List<Identificavel<String>> letras = Arrays.asList(() -> "z", () -> "b", () -> "a", () -> "y");
+		letras.sort(Identificavel.COMPARATOR_POR_IDENTIFICADOR);
+		Object[] ordenado = letras.stream().map(l -> l.getIdentificador()).toArray();
+		// System.out.println(Arrays.toString(ordenado));
+		Assert.assertEquals("a", ordenado[0]);
+	}
+
+}
