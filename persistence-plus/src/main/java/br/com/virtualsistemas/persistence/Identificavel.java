@@ -14,7 +14,7 @@ public interface Identificavel<T extends Serializable> extends Serializable {
 
 	T getIdentificador();
 
-	default void setIdentificador(String identificador) {
-		throw new PersistenceException(identificador);
+	default void setIdentificador(T identificador) {
+		throw new PersistenceException();
 	}
 }
