@@ -8,20 +8,22 @@ import org.junit.Test;
 
 public class NomeavelTest {
 
-	private static final List<Nomeavel> letras = Arrays.asList(() -> "z", () -> "b", () -> "a", () -> "Y");
+	private static final List<Nomeavel> letras = Arrays.asList(() -> "z", () -> "b", () -> "a", () -> null, null,
+			() -> "Y");
 
 	@Test
 	public void comparator() {
-		Object[] ordenado = letras.stream().sorted(Nomeavel.COMPARATOR_POR_NOME).map(l -> l.getNome()).toArray();
-		// System.out.println(Arrays.toString(ordenado));
+		Object[] ordenado = letras.stream().sorted(Nomeavel.COMPARATOR_POR_NOME)
+				.map(l -> (l == null) ? null : l.getNome()).toArray();
+//		System.out.println(Arrays.toString(ordenado));
 		Assert.assertEquals("Y", ordenado[0]);
 	}
 
 	@Test
 	public void comparatorIgnoreCase() {
-		Object[] ordenado = letras.stream().sorted(Nomeavel.COMPARATOR_POR_NOME_IGNORE_CASE).map(l -> l.getNome())
-				.toArray();
-		// System.out.println(Arrays.toString(ordenado));
+		Object[] ordenado = letras.stream().sorted(Nomeavel.COMPARATOR_POR_NOME_IGNORE_CASE)
+				.map(l -> (l == null) ? null : l.getNome()).toArray();
+//		System.out.println(Arrays.toString(ordenado));
 		Assert.assertEquals("a", ordenado[0]);
 	}
 
