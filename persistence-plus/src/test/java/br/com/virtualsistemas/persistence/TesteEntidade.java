@@ -1,7 +1,6 @@
 package br.com.virtualsistemas.persistence;
 
 import java.io.Serializable;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManagerFactory;
@@ -21,11 +20,11 @@ public abstract class TesteEntidade<E extends Entidade> {
 
 	protected static ResourceLocalFacade facade = null;
 	protected static EntityManagerFactory factory = null;
-	
+
 	public static JPAFacade getJPAFacade() {
 		return facade;
 	}
-	
+
 	public static EntityManagerFactory getEntityManagerFactory() {
 		return factory;
 	}
@@ -60,7 +59,7 @@ public abstract class TesteEntidade<E extends Entidade> {
 	protected JPAFacade getFacade() {
 		return facade;
 	}
-	
+
 	protected void detach(Object entity) {
 		facade.getEntityManager().detach(entity);
 	}
@@ -114,7 +113,7 @@ public abstract class TesteEntidade<E extends Entidade> {
 	}
 
 	protected E alterar(E entidade) {
-		((Nomeavel) entidade).setNome(UUID.randomUUID().toString());
+		NomeavelTest.preencher((Nomeavel) entidade);
 		return getFacade().update(entidade);
 	}
 
