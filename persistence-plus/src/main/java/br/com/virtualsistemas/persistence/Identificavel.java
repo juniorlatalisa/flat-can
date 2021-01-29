@@ -12,6 +12,9 @@ public interface Identificavel<T extends Serializable> extends Serializable {
 	(cn1 == null || cn2 == null || cn1.getIdentificador() == null) ? 0
 			: ((Comparable<? super Serializable>) cn1.getIdentificador()).compareTo(cn2.getIdentificador());
 
+	final int DEFAULT_MAX_SIZE = 255;
+	final String NOT_EMPTY_MESSAGE = "{entidade.identificador.notempty}";
+
 	T getIdentificador();
 
 	default void setIdentificador(T identificador) {
