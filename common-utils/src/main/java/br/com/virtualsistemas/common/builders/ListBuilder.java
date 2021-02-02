@@ -1,9 +1,11 @@
 package br.com.virtualsistemas.common.builders;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * @author juniorlatalisa
@@ -91,5 +93,30 @@ public class ListBuilder<E> implements Builder<List<E>> {
 			source.add(e);
 		}
 		return source;
+	}
+
+	public static <E> List<E> lazy(Supplier<E[]> constructor) {
+		return new AbstractList<E>() {
+			private E[] source = null;
+
+			private E[] getSource() {
+				synchronized (constructor) {
+					if (source == null) {
+						source = constructor.get();
+					}
+					return source;
+				}
+			}
+
+			@Override
+			public E get(int index) {
+				return getSource()[index];
+			}
+
+			@Override
+			public int size() {
+				return getSource().length;
+			}
+		};
 	}
 }
