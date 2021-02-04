@@ -1,5 +1,6 @@
 package br.com.virtualsistemas.persistence;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
@@ -12,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import br.com.virtualsistemas.persistence.jpa.JPAFacade;
+import br.com.virtualsistemas.persistence.jpa.JPAFacade.QueryStrategy;
 import br.com.virtualsistemas.persistence.jpa.ResourceLocalFacade;
 
 public abstract class TesteEntidade<E extends Entidade> {
@@ -30,6 +32,10 @@ public abstract class TesteEntidade<E extends Entidade> {
 	}
 
 	protected static void beforeClass(String persistenceUnitName) {
+		beforeClass(persistenceUnitName, null);
+	}
+
+	protected static void beforeClass(String persistenceUnitName, InputStream loadQuery) {
 		if (factory == null) {
 			factory = Persistence.createEntityManagerFactory(persistenceUnitName);
 			factory.createEntityManager().close();
@@ -37,6 +43,9 @@ public abstract class TesteEntidade<E extends Entidade> {
 		if (facade == null) {
 			log.info("Validador configurado: " + Validation.buildDefaultValidatorFactory().getValidator());
 			facade = new ResourceLocalFacade(factory.createEntityManager());
+			if (loadQuery != null) {
+				log.info("LoadQuery: " + facade.createQueryBuilder(QueryStrategy.NATIVE, loadQuery).execute());
+			}
 		}
 		/*
 		<dependency>

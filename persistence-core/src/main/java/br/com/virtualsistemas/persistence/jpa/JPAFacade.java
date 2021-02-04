@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -207,6 +207,17 @@ public abstract class JPAFacade {
 
 	/**
 	 * @param <T>
+	 * @param entity
+	 * @return
+	 * @see EntityManager#detach(Object)
+	 */
+	public <T extends Serializable> T detach(T entity) {
+		getEntityManager().detach(entity);
+		return entity;
+	}
+
+	/**
+	 * @param <T>
 	 * @param entityClass
 	 * @param primaryKey
 	 * @return
@@ -226,9 +237,9 @@ public abstract class JPAFacade {
 		return getEntityManager().merge(entity);
 	}
 
-	public <T extends Serializable> List<T> update(List<T> entities) {
+	public <T extends Serializable> Stream<T> update(Collection<T> entities) {
 		EntityManager em = getEntityManager();
-		return entities.stream().map(entity -> em.merge(entity)).collect(Collectors.toList());
+		return entities.stream().map(entity -> em.merge(entity));
 	}
 
 	/**
@@ -242,7 +253,7 @@ public abstract class JPAFacade {
 		return entity;
 	}
 
-	public <T extends Serializable> List<T> insert(List<T> entities) {
+	public <C extends Collection<? extends Serializable>> C insert(C entities) {
 		EntityManager em = getEntityManager();
 		entities.forEach(entity -> em.persist(entity));
 		return entities;

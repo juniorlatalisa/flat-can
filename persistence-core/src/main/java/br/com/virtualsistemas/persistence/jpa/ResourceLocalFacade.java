@@ -1,10 +1,12 @@
 package br.com.virtualsistemas.persistence.jpa;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -47,7 +49,7 @@ public class ResourceLocalFacade extends JPAFacade {
 	}
 
 	@Override
-	public <T extends Serializable> List<T> update(List<T> entities) {
+	public <T extends Serializable> Stream<T> update(Collection<T> entities) {
 		return transaction(() -> super.update(entities));
 	}
 
@@ -57,7 +59,7 @@ public class ResourceLocalFacade extends JPAFacade {
 	}
 
 	@Override
-	public <T extends Serializable> List<T> insert(List<T> entities) {
+	public <C extends Collection<? extends Serializable>> C insert(C entities) {
 		return transaction(() -> super.insert(entities));
 	}
 
