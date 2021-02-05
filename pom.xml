@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.virtualsistemas</groupId>
@@ -70,13 +69,6 @@
 					<artifactId>maven-shade-plugin</artifactId>
 					<version>3.2.4</version>
 				</plugin>
-				<plugin>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>3.3.1</version>
-					<configuration>
-						<failOnMissingWebXml>false</failOnMissingWebXml>
-					</configuration>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -111,6 +103,7 @@
 					<force>true</force>
 					<detectLinks>true</detectLinks>
 					<linksource>true</linksource>
+					<source>8</source>
 					<links>
 						<link>https://javaee.github.io/javaee-spec/javadocs/</link>
 					</links>
@@ -131,7 +124,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
-		<hibernate.version>5.4.22.Final</hibernate.version>
+		<hibernate.version>5.4.27.Final</hibernate.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -153,7 +146,7 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-validator</artifactId>
-				<version>6.1.6.Final</version>
+				<version>6.2.0.Final</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>

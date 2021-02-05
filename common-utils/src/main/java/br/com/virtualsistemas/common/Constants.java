@@ -72,13 +72,14 @@ public interface Constants {
 	/**
 	 * For our passwords we are going to implement a strict policy about their
 	 * format. We want our passwords to :
+	 * <ul>
+	 * <li>Be between 8 and 40 characters long</li>
+	 * <li>Contain at least one digit.</li>
+	 * <li>Contain at least one lower case character.</li>
+	 * <li>Contain at least one upper case character.</li>
+	 * <li>Contain at least on special character from [ @ # $ % ! . ].</li>
+	 * </ul>
 	 * 
-	 * <li>Be between 8 and 40 characters long
-	 * <li>Contain at least one digit.
-	 * <li>Contain at least one lower case character.
-	 * <li>Contain at least one upper case character.
-	 * <li>Contain at least on special character from [ @ # $ % ! . ].
-	 *
 	 * @see <a href=
 	 *      "https://examples.javacodegeeks.com/core-java/util/regex/matcher/validate-password-with-java-regular-expression-example">Validate
 	 *      Password with Java Regular Expression example</a>
