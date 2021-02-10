@@ -1,4 +1,4 @@
 #NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Sat Jan 16 02:47:49 BRT 2021
+#Tue Feb 09 22:07:24 BRT 2021
 parent-jee-1.0.0-SNAPSHOT.pom>=
 parent-jee-1.0.0-SNAPSHOT-tests.jar>=
