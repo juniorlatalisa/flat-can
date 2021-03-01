@@ -268,6 +268,18 @@ public abstract class JPAFacade {
 		}
 	}
 
+	public QueryBuilder createNamedQueryBuilder(String namedQuery) {
+		return createQueryBuilder(QueryStrategy.NAMED, namedQuery);
+	}
+
+	public QueryBuilder createDefaultQueryBuilder(String defaultQuery) {
+		return createQueryBuilder(QueryStrategy.DEFAULT, defaultQuery);
+	}
+
+	public QueryBuilder createNativeQueryBuilder(String nativeQuery) {
+		return createQueryBuilder(QueryStrategy.NATIVE, nativeQuery);
+	}
+
 	public QueryBuilder createQueryBuilder(QueryStrategy queryStrategy, Serializable queryValue) {
 		return new QueryBuilderImpl(queryStrategy, queryValue);
 	}

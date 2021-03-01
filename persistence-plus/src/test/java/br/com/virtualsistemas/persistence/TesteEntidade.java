@@ -35,6 +35,23 @@ public abstract class TesteEntidade<E extends Entidade> {
 		beforeClass(persistenceUnitName, null);
 	}
 
+	/**
+	 * &lt;dependency&gt;<br/>
+	 * &emsp;&lt;groupId&gt;org.glassfish&lt;/groupId&gt;<br/>
+	 * &emsp;&lt;artifactId&gt;javax.el&lt;/artifactId&gt;<br/>
+	 * &emsp;&lt;version&gt;3.0.1-b08&lt;/version&gt;<br/>
+	 * &emsp;&lt;scope&gt;test&lt;/scope&gt;<br/>
+	 * &lt;/dependency&gt;<br/>
+	 * &lt;dependency&gt;<br/>
+	 * &emsp;&lt;groupId&gt;org.hibernate&lt;/groupId&gt;<br/>
+	 * &emsp;&lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;<br/>
+	 * &emsp;&lt;version&gt;6.0.2.Final&lt;/version&gt;<br/>
+	 * &emsp;&lt;scope&gt;test&lt;/scope&gt;<br/>
+	 * &lt;/dependency&gt;<br/>
+	 * 
+	 * @param persistenceUnitName
+	 * @param loadQuery
+	 */
 	protected static void beforeClass(String persistenceUnitName, InputStream loadQuery) {
 		if (factory == null) {
 			factory = Persistence.createEntityManagerFactory(persistenceUnitName);
@@ -47,26 +64,16 @@ public abstract class TesteEntidade<E extends Entidade> {
 				log.info("LoadQuery: " + facade.createQueryBuilder(QueryStrategy.NATIVE, loadQuery).execute());
 			}
 		}
-		/*
-		<dependency>
-			<groupId>org.glassfish</groupId>
-			<artifactId>javax.el</artifactId>
-			<version>3.0.1-b08</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>6.0.2.Final</version>
-			<scope>test</scope>
-		</dependency>
-		*/
 	}
 
 	protected abstract E criar();
 
 	protected JPAFacade getFacade() {
 		return facade;
+	}
+
+	protected QueryBuilder createNamedQueryBuilder(String namedQuery) {
+		return getFacade().createNamedQueryBuilder(namedQuery);
 	}
 
 	protected void detach(Object entity) {
