@@ -14,14 +14,18 @@ import javax.persistence.EntityTransaction;
 public class ResourceLocalFacade extends JPAFacade {
 
 	public ResourceLocalFacade(EntityManager entityManager) {
+		this.entityManager = () -> entityManager;
+	}
+
+	public ResourceLocalFacade(Supplier<EntityManager> entityManager) {
 		this.entityManager = entityManager;
 	}
 
-	private EntityManager entityManager;
+	private Supplier<EntityManager> entityManager;
 
 	@Override
 	public EntityManager getEntityManager() {
-		return entityManager;
+		return entityManager.get();
 	}
 
 	protected <T> T transaction(Supplier<T> command) {

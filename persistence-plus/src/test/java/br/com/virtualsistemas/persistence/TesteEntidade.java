@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.validation.Validation;
@@ -59,11 +60,23 @@ public abstract class TesteEntidade<E extends Entidade> {
 		}
 		if (facade == null) {
 			log.info("Validador configurado: " + Validation.buildDefaultValidatorFactory().getValidator());
-			facade = new ResourceLocalFacade(factory.createEntityManager());
+			facade = new ResourceLocalFacade(() -> getEntityManager());
 			if (loadQuery != null) {
 				log.info("LoadQuery: " + facade.createQueryBuilder(QueryStrategy.NATIVE, loadQuery).execute());
 			}
 		}
+	}
+
+	private static final ThreadLocal<EntityManager> entityManagers = new ThreadLocal<>();
+
+	protected static EntityManager getEntityManager() {
+		EntityManager em;
+		synchronized (entityManagers) {
+			if ((em = entityManagers.get()) == null || !em.isOpen()) {
+				entityManagers.set(em = factory.createEntityManager());
+			}
+		}
+		return em;
 	}
 
 	protected abstract E criar();
