@@ -1,7 +1,5 @@
 package br.com.virtualsistemas.persistence.jdbc;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +15,6 @@ import java.util.function.Supplier;
 
 import javax.persistence.PersistenceException;
 
-import br.com.virtualsistemas.persistence.QueryBuilder;
 import br.com.virtualsistemas.persistence.VSPersistence;
 
 public abstract class ConnectionFacade {
@@ -116,14 +113,6 @@ public abstract class ConnectionFacade {
 		return new JDBCIterator<T>(queryValue, params, startResult, maxResults);
 	}
 
-	public QueryBuilder createQueryBuilder(String queryValue) {
-		return new QueryBuilderImpl(queryValue);
-	}
-
-	public QueryBuilder createQueryBuilder(InputStream queryValue) {
-		return createQueryBuilder(QueryBuilder.load(queryValue, StandardCharsets.UTF_8));
-	}
-
 	protected class JDBCIterator<E> implements Iterator<E>, Supplier<E> {
 
 		public JDBCIterator(String queryValue, Map<Object, Object> params, int startResult, int maxResults) {
@@ -200,35 +189,6 @@ public abstract class ConnectionFacade {
 					throw new PersistenceException(e);
 				}
 			}
-		}
-	}
-
-	protected class QueryBuilderImpl extends QueryBuilder {
-
-		public QueryBuilderImpl(String queryValue) {
-			this.queryValue = queryValue;
-		}
-
-		private String queryValue;
-
-		@Override
-		public <T> T single() {
-			throw new PersistenceException("unsuported single");
-		}
-
-		@Override
-		public int execute() {
-			return ConnectionFacade.this.execute(queryValue, getParams());
-		}
-
-		@Override
-		public <T> List<T> list() {
-			return ConnectionFacade.this.list(queryValue, getParams(), getStartResult(), getMaxResults());
-		}
-
-		@Override
-		public <T> Iterator<T> iterator() {
-			return ConnectionFacade.this.iterator(queryValue, getParams(), getStartResult(), getMaxResults());
 		}
 	}
 }

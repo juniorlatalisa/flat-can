@@ -1,5 +1,6 @@
 package br.com.virtualsistemas.persistence.jpa;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -15,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.com.virtualsistemas.persistence.EntityTest;
+import br.com.virtualsistemas.persistence.QueryBuilder;
 import br.com.virtualsistemas.persistence.TestUtil;
 import br.com.virtualsistemas.persistence.VSPersistence;
 import br.com.virtualsistemas.persistence.jpa.JPAFacade.QueryStrategy;
@@ -40,6 +42,10 @@ public class JPAFacadeTest {
 		return instancia.insert(entity).getId();
 	}
 
+	protected QueryBuilder createQueryBuilder(QueryStrategy queryStrategy, Serializable queryValue) {
+		return new QueryBuilderImpl(instancia, queryStrategy, queryValue);
+	}
+
 	@Test
 	public void insert() {
 		Assert.assertNotNull(getId());
@@ -55,8 +61,7 @@ public class JPAFacadeTest {
 	public void find2() {
 		Long id = getId();
 		EntityTest e1 = instancia.find(EntityTest.class, id);
-		EntityTest e2 = instancia.createQueryBuilder(QueryStrategy.CRITERIA, EntityTest.class).setParam("id", id)
-				.find();
+		EntityTest e2 = createQueryBuilder(QueryStrategy.CRITERIA, EntityTest.class).setParam("id", id).find();
 		Assert.assertTrue(e1.equals(e2));
 	}
 
@@ -68,8 +73,8 @@ public class JPAFacadeTest {
 	@Test
 	public void delete2() {
 		Long id = getId();
-		Assert.assertTrue(Integer.valueOf(1).equals(
-				instancia.createQueryBuilder(QueryStrategy.NAMED, EntityTest.DELETE1).setParam("id", id).execute()));
+		Assert.assertTrue(Integer.valueOf(1)
+				.equals(createQueryBuilder(QueryStrategy.NAMED, EntityTest.DELETE1).setParam("id", id).execute()));
 	}
 
 	@Test
@@ -86,8 +91,8 @@ public class JPAFacadeTest {
 	@Test
 	public void execute2() {
 		List<Long> list1 = Arrays.asList(getId(), getId());
-		Assert.assertTrue(Integer.valueOf(list1.size()).equals(instancia
-				.createQueryBuilder(QueryStrategy.NAMED, EntityTest.DELETE2).setParam("ids", list1).execute()));
+		Assert.assertTrue(Integer.valueOf(list1.size())
+				.equals(createQueryBuilder(QueryStrategy.NAMED, EntityTest.DELETE2).setParam("ids", list1).execute()));
 	}
 
 	@Test
@@ -120,9 +125,9 @@ public class JPAFacadeTest {
 	@Test
 	public void list2() {
 		List<Long> list1 = Arrays.asList(getId(), getId());
-		List<Number> list2 = instancia
-				.createQueryBuilder(QueryStrategy.NATIVE, "select e.id from entity_test e where e.id in (:ids)")
-				.setMaxResults(list1.size()).setParam("ids", list1).list();
+		List<Number> list2 = createQueryBuilder(QueryStrategy.NATIVE,
+				"select e.id from entity_test e where e.id in (:ids)").setMaxResults(list1.size())
+						.setParam("ids", list1).list();
 		Assert.assertTrue(
 				list1.containsAll(list2.stream().map(value -> value.longValue()).collect(Collectors.toList())));
 	}

@@ -1,8 +1,6 @@
 package br.com.virtualsistemas.persistence.jpa;
 
-import java.io.InputStream;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +26,6 @@ import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
-import br.com.virtualsistemas.persistence.QueryBuilder;
 import br.com.virtualsistemas.persistence.VSPersistence;
 
 public abstract class JPAFacade {
@@ -265,57 +262,6 @@ public abstract class JPAFacade {
 			return true;
 		} catch (EntityNotFoundException e) {
 			return false;
-		}
-	}
-
-	public QueryBuilder createNamedQueryBuilder(String namedQuery) {
-		return createQueryBuilder(QueryStrategy.NAMED, namedQuery);
-	}
-
-	public QueryBuilder createDefaultQueryBuilder(String defaultQuery) {
-		return createQueryBuilder(QueryStrategy.DEFAULT, defaultQuery);
-	}
-
-	public QueryBuilder createNativeQueryBuilder(String nativeQuery) {
-		return createQueryBuilder(QueryStrategy.NATIVE, nativeQuery);
-	}
-
-	public QueryBuilder createQueryBuilder(QueryStrategy queryStrategy, Serializable queryValue) {
-		return new QueryBuilderImpl(queryStrategy, queryValue);
-	}
-
-	public QueryBuilder createQueryBuilder(QueryStrategy queryStrategy, InputStream queryValue) {
-		return createQueryBuilder(queryStrategy, QueryBuilder.load(queryValue, StandardCharsets.UTF_8));
-	}
-
-	protected class QueryBuilderImpl extends QueryBuilder {
-
-		public QueryBuilderImpl(QueryStrategy queryStrategy, Serializable queryValue) {
-			this.queryStrategy = queryStrategy;
-			this.queryValue = queryValue;
-		}
-
-		private QueryStrategy queryStrategy;
-		private Serializable queryValue;
-
-		@Override
-		public <T> T single() {
-			return JPAFacade.this.single(queryStrategy, queryValue, getParams());
-		}
-
-		@Override
-		public int execute() {
-			return JPAFacade.this.execute(queryStrategy, queryValue, getParams());
-		}
-
-		@Override
-		public <T> List<T> list() {
-			return JPAFacade.this.list(queryStrategy, queryValue, getParams(), getStartResult(), getMaxResults());
-		}
-
-		@Override
-		public <T> Iterator<T> iterator() {
-			return JPAFacade.this.iterator(queryStrategy, queryValue, getParams(), getStartResult());
 		}
 	}
 

@@ -2,6 +2,7 @@ package br.com.virtualsistemas.persistence;
 
 import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import org.junit.Test;
 
 import br.com.virtualsistemas.persistence.jpa.JPAFacade;
 import br.com.virtualsistemas.persistence.jpa.JPAFacade.QueryStrategy;
+import br.com.virtualsistemas.persistence.jpa.QueryBuilderImpl;
 import br.com.virtualsistemas.persistence.jpa.ResourceLocalFacade;
 
 public abstract class TesteEntidade<E extends Entidade> {
@@ -62,9 +64,21 @@ public abstract class TesteEntidade<E extends Entidade> {
 			log.info("Validador configurado: " + Validation.buildDefaultValidatorFactory().getValidator());
 			facade = new ResourceLocalFacade(() -> getEntityManager());
 			if (loadQuery != null) {
-				log.info("LoadQuery: " + facade.createQueryBuilder(QueryStrategy.NATIVE, loadQuery).execute());
+				log.info("LoadQuery: " + createQueryBuilder(QueryStrategy.NATIVE, loadQuery).execute());
 			}
 		}
+	}
+
+	public static QueryBuilder createQueryBuilder(QueryStrategy queryStrategy, InputStream queryValue) {
+		return createQueryBuilder(queryStrategy, QueryBuilder.load(queryValue, StandardCharsets.UTF_8));
+	}
+
+	protected static QueryBuilder createQueryBuilder(QueryStrategy queryStrategy, Serializable queryValue) {
+		return new QueryBuilderImpl(facade, queryStrategy, queryValue);
+	}
+
+	protected static QueryBuilder createNamedQueryBuilder(Serializable queryValue) {
+		return new QueryBuilderImpl(facade, QueryStrategy.NAMED, queryValue);
 	}
 
 	private static final ThreadLocal<EntityManager> entityManagers = new ThreadLocal<>();
@@ -83,10 +97,6 @@ public abstract class TesteEntidade<E extends Entidade> {
 
 	protected JPAFacade getFacade() {
 		return facade;
-	}
-
-	protected QueryBuilder createNamedQueryBuilder(String namedQuery) {
-		return getFacade().createNamedQueryBuilder(namedQuery);
 	}
 
 	protected void detach(Object entity) {
