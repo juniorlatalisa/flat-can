@@ -20,6 +20,13 @@ public class CryptoUtilsTest {
 	public static final String LINHA = "___________________________";
 
 	@Test
+	public void generateKeyPair() {
+		String key1 = StringUtils.encodeBase64(CryptoUtils.generateKeyPair().getPublic().getEncoded());
+		String key2 = StringUtils.encodeBase64(CryptoUtils.generateKeyPair().getPublic().getEncoded());
+		Assert.assertNotEquals(key1, key2);
+	}
+
+	@Test
 	public void sha256() {
 		final String teste = "Teste CryptoUtils SHA-256";
 		final byte[] encrypted = CryptoUtils.encrypt(teste.getBytes(StandardCharsets.UTF_8));

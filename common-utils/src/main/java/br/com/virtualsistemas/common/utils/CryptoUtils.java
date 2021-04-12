@@ -33,7 +33,8 @@ import br.com.virtualsistemas.common.Constants;
  */
 public class CryptoUtils {
 
-	private CryptoUtils() {}
+	private CryptoUtils() {
+	}
 
 	public static byte[] encrypt(byte[] value, Key key, AlgorithmParameterSpec params, String transformation,
 			int opmode) {
@@ -115,21 +116,33 @@ public class CryptoUtils {
 	}
 
 	public static KeyPair generateKeyPair() {
+		return generateKeyPair(-1);
+	}
+
+	public static KeyPair generateKeyPair(int keysize) {
 		try {
-			return KeyPairGenerator.getInstance(Constants.RSA_ALGORITHM).generateKeyPair();
+			KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(Constants.RSA_ALGORITHM);
+			if (keysize > 0) {
+				keyPairGenerator.initialize(keysize);
+			}
+			return keyPairGenerator.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	public static void generateKeyPair(OutputStream privateKey, OutputStream publicKey) {
+		generateKeyPair(privateKey, publicKey, -1);
+	}
+
+	public static void generateKeyPair(OutputStream privateKey, OutputStream publicKey, int keysize) {
 		try {
-			KeyPair keyPair = KeyPairGenerator.getInstance(Constants.RSA_ALGORITHM).generateKeyPair();
+			KeyPair keyPair = generateKeyPair(keysize);
 			privateKey.write(keyPair.getPrivate().getEncoded());
 			privateKey.flush();
 			publicKey.write(keyPair.getPublic().getEncoded());
 			publicKey.flush();
-		} catch (NoSuchAlgorithmException | IOException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
