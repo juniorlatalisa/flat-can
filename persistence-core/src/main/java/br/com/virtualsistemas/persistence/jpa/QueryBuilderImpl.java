@@ -1,6 +1,8 @@
 package br.com.virtualsistemas.persistence.jpa;
 
+import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,6 +15,10 @@ public class QueryBuilderImpl extends QueryBuilder {
 		this.queryStrategy = queryStrategy;
 		this.queryValue = queryValue;
 		this.facade = facade;
+	}
+
+	public QueryBuilderImpl(JPAFacade facade, QueryStrategy queryStrategy, InputStream queryValue) {
+		this(facade, queryStrategy, load((InputStream) queryValue, StandardCharsets.UTF_8));
 	}
 
 	private QueryStrategy queryStrategy;
