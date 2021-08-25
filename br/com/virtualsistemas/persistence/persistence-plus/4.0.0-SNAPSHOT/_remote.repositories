@@ -1,5 +1,5 @@
 #NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Tue Feb 09 22:08:29 BRT 2021
+#Wed Aug 25 16:43:13 BRT 2021
 persistence-plus-4.0.0-SNAPSHOT.jar>=
 persistence-plus-4.0.0-SNAPSHOT-tests.jar>=
 persistence-plus-4.0.0-SNAPSHOT.pom>=

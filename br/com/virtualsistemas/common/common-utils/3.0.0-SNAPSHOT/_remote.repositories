@@ -1,5 +1,5 @@
 #NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Tue Feb 09 22:07:45 BRT 2021
+#Wed Aug 25 16:42:40 BRT 2021
 common-utils-3.0.0-SNAPSHOT.jar>=
 common-utils-3.0.0-SNAPSHOT-javadoc.jar>=
 common-utils-3.0.0-SNAPSHOT-test-sources.jar>=
