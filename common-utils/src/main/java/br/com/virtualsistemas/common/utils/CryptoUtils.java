@@ -1,5 +1,6 @@
 package br.com.virtualsistemas.common.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,6 +22,7 @@ import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.CipherOutputStream;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
@@ -93,13 +95,49 @@ public class CryptoUtils {
 	}
 
 	public static byte[] encrypt(byte[] value, Key key, int opmode) {
+		return encrypt(value, key, opmode //
+				, Integer.parseInt(System.getProperty("CryptoUtils.maxEncryptSize", "117")) //
+				, Integer.parseInt(System.getProperty("CryptoUtils.maxDecryptSize", "256")) //
+		);
+	}
+
+	protected static byte[] encrypt(byte[] value, Key key, int opmode, int maxEncryptSize, int maxDecryptSize) {
 		try {
 			Cipher cipher = Cipher.getInstance(Constants.RSA_ALGORITHM);
 			cipher.init(opmode, key);
-			return cipher.doFinal(value);
-		} catch (IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException
-				| InvalidKeyException e) {
+			if (Cipher.ENCRYPT_MODE == opmode && value.length > maxEncryptSize) {
+				return encrypt(cipher, value);
+			}
+			if (Cipher.DECRYPT_MODE == opmode && value.length > maxDecryptSize) {
+				return encrypt(cipher, value);
+			}
+			try {
+				return cipher.doFinal(value);
+			} catch (IllegalBlockSizeException e) {
+				return encrypt(cipher, value);
+			}
+		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	protected static byte[] encrypt(Cipher cipher, byte[] value) throws IOException {
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream(value.length);
+		try {
+			encrypt(cipher, buffer, value);
+		} finally {
+			buffer.close();
+		}
+		return buffer.toByteArray();
+	}
+
+	protected static void encrypt(Cipher cipher, OutputStream os, byte[] value) throws IOException {
+		CipherOutputStream cos = new CipherOutputStream(os, cipher);
+		try {
+			os.write(value);
+			cos.flush();
+		} finally {
+			cos.close();
 		}
 	}
 

@@ -84,4 +84,12 @@ public class CryptoUtilsTest {
 				.append("\n\n");
 		return retorno.equals(teste);
 	}
+
+	@Test
+	public void dataMustNotBeLonger() {
+		KeyPair keyPair = CryptoUtils.generateKeyPair(1024);
+		byte[] encrypt = CryptoUtils.encrypt(keyPair.getPublic().getEncoded(), keyPair.getPublic());
+		byte[] decrypt = CryptoUtils.decrypt(encrypt, keyPair.getPrivate());
+		Assert.assertEquals(keyPair.getPublic(), CryptoUtils.generatePublicKey(decrypt));
+	}
 }
